@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0b0d">
+  <meta name="description" content="Clever Analysis — football statistics and match analysis.">
+  <title>Clever Analysis | Intelligence Behind Every Match</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root{--bg:#09090b;--panel:#141417;--panel2:#1b1b20;--gold:#d8ad52;--gold2:#f2d48a;--muted:#a6a6ad;--line:#2b2b31;--white:#f7f5ef}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    button,input,textarea,select{font:inherit}button{cursor:pointer}
+    .top{position:sticky;top:0;z-index:5;background:#09090bf2;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    .wrap{max-width:1100px;margin:auto;padding:0 18px}
+    header{height:72px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:1.1px}
+    .crest{width:39px;height:39px;border:1px solid var(--gold);border-radius:12px;display:grid;place-items:center;color:var(--gold);font-size:21px}
+    .brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:2px;font-weight:600;margin-top:2px}
+    .gold{color:var(--gold)}.btn{border:1px solid var(--gold);background:var(--gold);color:#17130a;border-radius:9px;padding:10px 14px;font-weight:800}
+    .btn.ghost{background:transparent;color:var(--gold)}.btn.small{padding:7px 10px;font-size:12px}
+    nav{display:flex;gap:8px;overflow:auto;padding:10px 0 13px}
+    nav button{white-space:nowrap;border:1px solid var(--line);background:var(--panel);color:#ddd;border-radius:20px;padding:8px 14px;font-size:13px}
+    nav button.active{background:var(--gold);border-color:var(--gold);color:#17130a;font-weight:800}
+    .hero{padding:36px 0 26px;display:grid;grid-template-columns:1.5fr .8fr;gap:20px;align-items:center}
+    .eyebrow{color:var(--gold);font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase}
+    h1{font-size:clamp(32px,6vw,57px);line-height:1.03;margin:12px 0}
+    .hero p{color:var(--muted);max-width:580px;line-height:1.6;margin:0 0 20px}
+    .hero-box{border:1px solid #6d562c;background:linear-gradient(145deg,#242017,#101013 65%);border-radius:18px;padding:22px;text-align:center}
+    .hero-ball{font-size:58px}.hero-box strong{display:block;font-size:18px;margin-top:5px}.hero-box span{font-size:12px;color:var(--muted)}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 28px}
+    .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+    .stat b{display:block;color:var(--gold);font-size:21px}.stat span{color:var(--muted);font-size:11px}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:10px;margin:28px 0 14px}
+    h2{font-size:20px;margin:0}.section-head p{color:var(--muted);font-size:12px;margin:5px 0 0}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+    .league{color:var(--gold);font-size:11px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}
+    .teams{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:15px 0}
+    .team{flex:1;text-align:center;font-weight:750;font-size:14px}.vs{color:var(--muted);font-size:11px}
+    .meta{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;border-top:1px solid var(--line);padding-top:11px}
+    .card-actions{display:flex;gap:8px;margin-top:13px}.card-actions button{flex:1}
+    .tag{font-size:10px;border:1px solid #66532d;color:var(--gold2);border-radius:20px;padding:4px 8px}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .feature{background:linear-gradient(145deg,#19191d,#101012);border:1px solid var(--line);border-radius:14px;padding:17px}
+    .feature .ico{font-size:24px}.feature b{display:block;margin:8px 0 4px}.feature span{font-size:12px;color:var(--muted);line-height:1.5}
+    .empty{padding:26px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
+    footer{border-top:1px solid var(--line);margin-top:38px;padding:22px 0;color:var(--muted);font-size:11px;text-align:center}
+    .modal{position:fixed;inset:0;background:#000b;z-index:10;display:none;align-items:center;justify-content:center;padding:16px}
+    .modal.show{display:flex}.dialog{background:#151519;border:1px solid #594825;border-radius:16px;max-width:560px;width:100%;max-height:90vh;overflow:auto;padding:20px}
+    .dialog-head{display:flex;justify-content:space-between;align-items:center}.close{background:none;border:0;color:#fff;font-size:25px}
+    label{display:block;color:var(--muted);font-size:12px;margin:12px 0 5px}
+    input,textarea,select{width:100%;background:#0c0c0f;color:#fff;border:1px solid var(--line);border-radius:8px;padding:11px}
+    textarea{min-height:100px;resize:vertical}.notice{font-size:11px;color:var(--muted);line-height:1.5;margin-top:12px}
+    .analysis{white-space:pre-wrap;color:#ddd;line-height:1.65;font-size:14px}
+    .hidden{display:none!important}
+    @media(max-width:700px){.hero{grid-template-columns:1fr;padding-top:27px}.hero-box{display:none}.grid{grid-template-columns:1fr}.feature-grid{grid-template-columns:1fr 1fr}.stats{gap:7px}.stat{padding:11px}.stat b{font-size:18px}}
+    @media(max-width:420px){.feature-grid{grid-template-columns:1fr}.brand{font-size:13px}.header-actions .btn{padding:8px 10px;font-size:12px}}
+  </style>
+</head>
+<body>
+<div class="top">
+  <div class="wrap">
+    <header>
+      <div class="brand"><div class="crest">⚽</div><div>CLEVER <span class="gold">ANALYSIS</span><small>INTELLIGENCE BEHIND EVERY MATCH</small></div></div>
+      <div class="header-actions"><button class="btn ghost small" id="adminOpen">Admin</button></div>
+    </header>
+    <nav id="nav">
+      <button class="active" data-target="home">Home</button>
+      <button data-target="matches">Today's Matches</button>
+      <button data-target="analysis">Latest Analysis</button>
+      <button data-target="premium">Premium</button>
+    </nav>
+  </div>
+</div>
+<main class="wrap" id="home">
+  <section class="hero">
+    <div><div class="eyebrow">Football intelligence platform</div>
+      <h1>See the game<br><span class="gold">beyond the score.</span></h1>
+      <p>Explore match history, team form and carefully prepared football analysis — all in one place.</p>
+      <button class="btn" onclick="document.getElementById('matches').scrollIntoView({behavior:'smooth'})">Explore Matches →</button>
+    </div>
+    <div class="hero-box"><div class="hero-ball">⚽</div><strong>DATA. CONTEXT. INSIGHT.</strong><span>Thoughtful analysis for every fixture.</span></div>
+  </section>
+  <section class="stats">
+    <div class="stat"><b id="matchCount">2</b><span>Listed fixtures</span></div>
+    <div class="stat"><b>10+</b><span>H2H focus</span></div>
+    <div class="stat"><b>24/7</b><span>Access to published analysis</span></div>
+  </section>
+  <section id="matches">
+    <div class="section-head"><div><h2>Today's Matches</h2><p>Sample fixtures — replace these with verified upcoming matches.</p></div><span class="tag">FIXTURES</span></div>
+    <div class="grid" id="matchGrid"></div>
+  </section>
+  <section id="analysis">
+    <div class="section-head"><div><h2>Latest Analysis</h2><p>Match notes published by the Clever Analysis team.</p></div></div>
+    <div class="grid" id="analysisGrid"></div>
+  </section>
+  <section id="premium">
+    <div class="section-head"><div><h2>Premium Analysis</h2><p>Individual purchases can be enabled after secure payment integration.</p></div><span class="tag">PREMIUM</span></div>
+    <div class="card"><h3 class="gold" style="margin-top:0">Unlock deeper match research</h3><p style="color:var(--muted);font-size:13px;line-height:1.6">Premium reports can include recent head-to-head results, form summaries, goal trends, corner statistics and half-time/full-time observations. Payment and automatic unlocking are not active in this prototype.</p><button class="btn ghost" onclick="alert('Premium checkout will be connected after the payment provider and business account are configured.')">How premium works</button></div>
+  </section>
+  <section style="margin-top:30px">
+    <div class="section-head"><div><h2>Explore the analysis</h2><p>Clear information, not guaranteed outcomes.</p></div></div>
+    <div class="feature-grid">
+      <div class="feature"><div class="ico">📚</div><b>Head-to-Head</b><span>Review previous meetings and results.</span></div>
+      <div class="feature"><div class="ico">📈</div><b>Team Form</b><span>Compare recent performances.</span></div>
+      <div class="feature"><div class="ico">🥅</div><b>Goal Trends</b><span>Review scoring patterns and totals.</span></div>
+      <div class="feature"><div class="ico">🚩</div><b>Corner Data</b><span>Study recorded corner statistics.</span></div>
+      <div class="feature"><div class="ico">⏱️</div><b>Half-Time</b><span>Examine first-half performance.</span></div>
+      <div class="feature"><div class="ico">📊</div><b>Full-Time</b><span>Read the complete match picture.</span></div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap">© <span id="year"></span> Clever Analysis · Intelligence Behind Every Match.<br>Analysis is informational and does not guarantee match outcomes.</div></footer>
+
+<div class="modal" id="detailModal"><div class="dialog"><div class="dialog-head"><h2 id="detailTitle">Match analysis</h2><button class="close" data-close="detailModal">×</button></div><div id="detailBody" class="analysis"></div></div></div>
+<div class="modal" id="adminModal"><div class="dialog"><div class="dialog-head"><h2>Admin · Publish a match</h2><button class="close" data-close="adminModal">×</button></div>
+  <p class="notice">Prototype admin tool: entries are saved only in this browser on this device. It is not yet a secure online admin account.</p>
+  <form id="matchForm">
+    <label>Competition</label><input name="league" placeholder="e.g. Premier League" required>
+    <label>Home team</label><input name="home" placeholder="e.g. Arsenal" required>
+    <label>Away team</label><input name="away" placeholder="e.g. Chelsea" required>
+    <label>Kick-off date and time</label><input name="date" placeholder="e.g. 22 Nov · 18:30 EAT">
+    <label>Access</label><select name="access"><option>Free</option><option>Premium</option></select>
+    <label>Analysis / research notes</label><textarea name="notes" placeholder="Add form, H2H, statistics, observations and sources..." required></textarea>
+    <button class="btn" style="width:100%;margin-top:15px">Publish analysis</button>
+  </form>
+  <button class="btn ghost small" id="resetSamples" style="margin-top:12px">Restore sample fixtures</button>
+</div></div>
+<script>
+const samples=[
+ {id:1,league:"Premier League · Sample",home:"Arsenal",away:"Chelsea",date:"Sample fixture · replace date",access:"Free",notes:"Sample content only. Add verified recent form, head-to-head results, injuries and team news before publishing. Do not treat a trend as a guaranteed outcome."},
+ {id:2,league:"Bundesliga · Sample",home:"Bayern Munich",away:"Borussia Dortmund",date:"Sample fixture · replace date",access:"Premium",notes:"Sample premium report. Add verified H2H results, recent performances, goal trends and corner data before publishing. Premium purchase is not yet connected."}
+];
+let matches=JSON.parse(localStorage.getItem("ca_matches")||"null")||samples;
+const save=()=>localStorage.setItem("ca_matches",JSON.stringify(matches));
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function card(m){return `<article class="card"><div class="league">${esc(m.league)}</div><div class="teams"><div class="team">${esc(m.home)}</div><div class="vs">VS</div><div class="team">${esc(m.away)}</div></div><div class="meta"><span>${esc(m.date||"Date TBC")}</span><span class="tag">${esc(m.access)}</span></div><div class="card-actions"><button class="btn ghost small" onclick="showDetail(${m.id})">Read analysis</button></div></article>`}
+function render(){document.getElementById("matchGrid").innerHTML=matches.length?matches.map(card).join(""):'<div class="empty">No fixtures published yet.</div>';document.getElementById("analysisGrid").innerHTML=matches.length?matches.map(card).join(""):'<div class="empty">New analysis will appear here.</div>';document.getElementById("matchCount").textContent=matches.length;}
+function showDetail(id){const m=matches.find(x=>x.id===id);if(!m)return;document.getElementById("detailTitle").textContent=m.home+" vs "+m.away;document.getElementById("detailBody").textContent=m.notes;document.getElementById("detailModal").classList.add("show");}
+document.getElementById("matchForm").addEventListener("submit",e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target));matches.unshift({...d,id:Date.now()});save();render();e.target.reset();document.getElementById("adminModal").classList.remove("show");});
+document.getElementById("adminOpen").onclick=()=>document.getElementById("adminModal").classList.add("show");
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>document.getElementById(b.dataset.close).classList.remove("show"));
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.getElementById(b.dataset.target).scrollIntoView({behavior:"smooth"});});
+document.getElementById("resetSamples").onclick=()=>{if(confirm("Restore the original sample fixtures?")){matches=samples;save();render();}};
+document.getElementById("year").textContent=new Date().getFullYear();render();
+if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body></html>
