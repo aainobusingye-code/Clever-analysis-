@@ -1,1 +1,85 @@
-admin.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clever Analysis Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      background: #080808;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px 15px;
+    }
+    h1 { color: #d4af37; }
+    input, button {
+      display: block;
+      width: 100%;
+      max-width: 350px;
+      box-sizing: border-box;
+      margin: 12px auto;
+      padding: 14px;
+      border-radius: 6px;
+    }
+    button {
+      background: #d4af37;
+      border: 0;
+      font-weight: bold;
+    }
+    #message { margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <h1>CLEVER ANALYSIS</h1>
+  <h3>Administrator Login</h3>
+
+  <input id="email" type="email" placeholder="Your email">
+  <input id="password" type="password" placeholder="Your password">
+  <button onclick="login()">LOGIN</button>
+
+  <p id="message"></p>
+
+  <script>
+    const SUPABASE_URL = "PASTE_YOUR_PROJECT_URL_HERE";
+    const SUPABASE_KEY = "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+
+    const db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    async function login() {
+      const message = document.getElementById("message");
+      message.textContent = "Checking login...";
+
+      const { data, error } = await db.auth.signInWithPassword({
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+      });
+
+      if (error) {
+        message.textContent = error.message;
+        return;
+      }
+
+      const { data: admin, error: adminError } = await db
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+
+      if (adminError || !admin) {
+        await db.auth.signOut();
+        message.textContent = "Access denied. You are not an administrator.";
+        return;
+      }
+
+      message.textContent = "Administrator login successful!";
+    }
+  </script>
+
+</body>
+</html>
